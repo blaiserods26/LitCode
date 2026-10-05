@@ -2,7 +2,13 @@ export const window = {
   showInputBox: async () => undefined,
   showInformationMessage: async () => undefined,
   showErrorMessage: async () => undefined,
+  showWarningMessage: async () => undefined,
   createWebviewPanel: () => ({}),
+  withProgress: async (_opts: any, task: any) => task({ report: () => {} }),
+};
+
+export const ProgressLocation = {
+  Notification: 15,
 };
 
 export const ViewColumn = {
@@ -27,4 +33,19 @@ export const workspace = {
   getConfiguration: () => ({
     get: (key: string, def: any) => def,
   }),
+};
+
+export class CancellationTokenSource {
+  token = { isCancellationRequested: false, onCancellationRequested: () => ({ dispose: () => {} }) };
+  cancel() {}
+  dispose() {}
+}
+
+export const LanguageModelChatMessage = {
+  User: (content: string) => ({ role: 'user', content }),
+  Assistant: (content: string) => ({ role: 'assistant', content }),
+};
+
+export const lm = {
+  selectChatModels: async () => [],
 };

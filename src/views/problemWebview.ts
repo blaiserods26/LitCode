@@ -14,9 +14,22 @@ export interface TestResultItem {
 }
 
 export interface WebviewMessage {
-  command: 'runTests' | 'submitSolution' | 'toggleBookmark' | 'toggleSolved' | 'openExternal';
+  command:
+    | 'runTests'
+    | 'submitSolution'
+    | 'toggleBookmark'
+    | 'toggleSolved'
+    | 'openExternal'
+    | 'requestAiHint'
+    | 'requestComplexity'
+    | 'diagnoseFailure';
   payload?: any;
 }
+
+export type AiRequestHandler = (
+  action: 'hint' | 'failure' | 'complexity',
+  payload?: any
+) => Promise<string>;
 
 export class ProblemWebviewPanel {
   public static currentPanel: ProblemWebviewPanel | undefined;
@@ -30,13 +43,20 @@ export class ProblemWebviewPanel {
     problem: LeetCodeProblemDetail,
     planManager: StudyPlanManager,
     onRunTests?: (testCases: string[]) => Promise<TestResultItem[]>,
-    onSubmit?: () => Promise<any>
+    onSubmit?: () => Promise<any>,
+    onAiRequest?: AiRequestHandler
   ): ProblemWebviewPanel {
     const column = vscode.ViewColumn.Beside;
 
     if (ProblemWebviewPanel.currentPanel) {
       ProblemWebviewPanel.currentPanel._panel.reveal(column);
-      ProblemWebviewPanel.currentPanel.setProblem(problem, planManager, onRunTests, onSubmit);
+      ProblemWebviewPanel.currentPanel.setProblem(
+        problem,
+        planManager,
+        onRunTests,
+        onSubmit,
+        onAiRequest
+      );
       return ProblemWebviewPanel.currentPanel;
     }
 
@@ -57,7 +77,8 @@ export class ProblemWebviewPanel {
       problem,
       planManager,
       onRunTests,
-      onSubmit
+      onSubmit,
+      onAiRequest
     );
     return ProblemWebviewPanel.currentPanel;
   }
@@ -68,11 +89,12 @@ export class ProblemWebviewPanel {
     problem: LeetCodeProblemDetail,
     private planManager: StudyPlanManager,
     private onRunTests?: (testCases: string[]) => Promise<TestResultItem[]>,
-    private onSubmit?: () => Promise<any>
+    private onSubmit?: () => Promise<any>,
+    private onAiRequest?: AiRequestHandler
   ) {
     this._panel = panel;
     this._extensionUri = extensionUri;
-    this.setProblem(problem, planManager, onRunTests, onSubmit);
+    this.setProblem(problem, planManager, onRunTests, onSubmit, onAiRequest);
 
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
@@ -102,7 +124,8 @@ export class ProblemWebviewPanel {
           }
           case 'runTests': {
             if (this.onRunTests) {
-              const testCases: string[] = message.payload?.testCases || this._problem.exampleTestcaseList;
+              const testCases: string[] =
+                message.payload?.testCases || this._problem.exampleTestcaseList;
               this._panel.webview.postMessage({ type: 'testingStarted' });
               try {
                 const results = await this.onRunTests(testCases);
@@ -135,6 +158,44 @@ export class ProblemWebviewPanel {
             }
             break;
           }
+          case 'requestAiHint': {
+            if (this.onAiRequest) {
+              this._panel.webview.postMessage({ type: 'aiStarted' });
+              try {
+                const text = await this.onAiRequest('hint', message.payload);
+                this._panel.webview.postMessage({ type: 'aiCompleted', text });
+              } catch (err: any) {
+                this._panel.webview.postMessage({ type: 'aiError', error: err.message });
+              }
+            } else {
+              vscode.window.showInformationMessage('AI Coach not available.');
+            }
+            break;
+          }
+          case 'requestComplexity': {
+            if (this.onAiRequest) {
+              this._panel.webview.postMessage({ type: 'aiStarted' });
+              try {
+                const text = await this.onAiRequest('complexity', message.payload);
+                this._panel.webview.postMessage({ type: 'aiCompleted', text });
+              } catch (err: any) {
+                this._panel.webview.postMessage({ type: 'aiError', error: err.message });
+              }
+            }
+            break;
+          }
+          case 'diagnoseFailure': {
+            if (this.onAiRequest) {
+              this._panel.webview.postMessage({ type: 'aiStarted' });
+              try {
+                const text = await this.onAiRequest('failure', message.payload);
+                this._panel.webview.postMessage({ type: 'aiCompleted', text });
+              } catch (err: any) {
+                this._panel.webview.postMessage({ type: 'aiError', error: err.message });
+              }
+            }
+            break;
+          }
         }
       },
       null,
@@ -146,26 +207,17 @@ export class ProblemWebviewPanel {
     problem: LeetCodeProblemDetail,
     planManager: StudyPlanManager,
     onRunTests?: (testCases: string[]) => Promise<TestResultItem[]>,
-    onSubmit?: () => Promise<any>
+    onSubmit?: () => Promise<any>,
+    onAiRequest?: AiRequestHandler
   ): void {
     this._problem = problem;
     this.planManager = planManager;
-    if (onRunTests) {
-      this.onRunTests = onRunTests;
-    }
-    if (onSubmit) {
-      this.onSubmit = onSubmit;
-    }
+    if (onRunTests) this.onRunTests = onRunTests;
+    if (onSubmit) this.onSubmit = onSubmit;
+    if (onAiRequest) this.onAiRequest = onAiRequest;
+
     this._panel.title = `#${problem.questionFrontendId} ${problem.title}`;
     this._panel.webview.html = this._getHtmlForWebview(problem);
-  }
-
-  public postTestResults(results: TestResultItem[]): void {
-    this._panel.webview.postMessage({ type: 'testingCompleted', results });
-  }
-
-  public postTestingError(error: string): void {
-    this._panel.webview.postMessage({ type: 'testingError', error });
   }
 
   public dispose(): void {
@@ -173,9 +225,7 @@ export class ProblemWebviewPanel {
     this._panel.dispose();
     while (this._disposables.length) {
       const x = this._disposables.pop();
-      if (x) {
-        x.dispose();
-      }
+      if (x) x.dispose();
     }
   }
 
@@ -194,7 +244,9 @@ export class ProblemWebviewPanel {
       .map((tag) => `<span class="tag">${tag.name}</span>`)
       .join(' ');
 
-    const sampleCasesJson = JSON.stringify(problem.exampleTestcaseList || [problem.sampleTestCase || '']);
+    const sampleCasesJson = JSON.stringify(
+      problem.exampleTestcaseList || [problem.sampleTestCase || '']
+    );
 
     const hintsHtml =
       problem.hints && problem.hints.length > 0
@@ -248,7 +300,7 @@ export class ProblemWebviewPanel {
       gap: 12px;
     }
     .title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 700;
       margin: 0;
       display: flex;
@@ -337,12 +389,31 @@ export class ProblemWebviewPanel {
       align-items: center;
       gap: 8px;
     }
-    .testrunner-card {
+    .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
-      margin-top: 20px;
+      margin-top: 16px;
+    }
+    .ai-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .ai-response-box {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid #00b8a3;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+    .ai-response-box.visible {
+      display: block;
     }
     .case-tabs {
       display: flex;
@@ -451,11 +522,26 @@ export class ProblemWebviewPanel {
     ${problem.content || '<p>Problem statement loading or unavailable.</p>'}
   </div>
 
-  <div class="section-title">💡 Hints & Guidance</div>
+  <!-- Socratic AI Helper -->
+  <div class="section-title">🧠 Socratic AI Coach (No Code Spoilers)</div>
+  <div class="card">
+    <div class="subtext" style="margin-bottom: 10px;">
+      Ask your AI coach for progressive guidance without giving away code:
+    </div>
+    <div class="ai-actions">
+      <button class="btn btn-secondary" onclick="requestAiHint(1)">💡 Level 1: Intuition</button>
+      <button class="btn btn-secondary" onclick="requestAiHint(2)">⚠️ Level 2: Edge Cases</button>
+      <button class="btn btn-secondary" onclick="requestAiHint(3)">🔄 Level 3: Pseudocode</button>
+      <button class="btn btn-secondary" onclick="requestComplexity()">⏱️ Check Complexity</button>
+    </div>
+    <div id="aiBox" class="ai-response-box"></div>
+  </div>
+
+  <div class="section-title">💡 Official Hints</div>
   ${hintsHtml}
 
   <div class="section-title">🧪 Test Runner</div>
-  <div class="testrunner-card">
+  <div class="card">
     <div class="case-tabs" id="caseTabs"></div>
     <textarea id="currentCaseInput" class="test-input" spellcheck="false"></textarea>
     <div class="runner-actions">
@@ -469,12 +555,14 @@ export class ProblemWebviewPanel {
     const vscode = acquireVsCodeApi();
     const testCases = ${sampleCasesJson};
     let activeCaseIndex = 0;
+    let lastResults = [];
 
     const caseTabs = document.getElementById('caseTabs');
     const inputArea = document.getElementById('currentCaseInput');
     const runBtn = document.getElementById('runTestsBtn');
     const submitBtn = document.getElementById('submitBtn');
     const resultsBox = document.getElementById('resultsBox');
+    const aiBox = document.getElementById('aiBox');
     const bookmarkBtn = document.getElementById('bookmarkBtn');
     const solvedBtn = document.getElementById('solvedBtn');
     const externalBtn = document.getElementById('externalBtn');
@@ -538,6 +626,26 @@ export class ProblemWebviewPanel {
       vscode.postMessage({ command: 'submitSolution' });
     });
 
+    function requestAiHint(level) {
+      vscode.postMessage({ command: 'requestAiHint', payload: { level } });
+    }
+
+    function requestComplexity() {
+      vscode.postMessage({ command: 'requestComplexity' });
+    }
+
+    function diagnoseFailedCase(idx) {
+      const res = lastResults[idx];
+      vscode.postMessage({
+        command: 'diagnoseFailure',
+        payload: {
+          failingInput: res.input,
+          actualOutput: res.actualOutput,
+          expectedOutput: res.expectedOutput
+        }
+      });
+    }
+
     window.addEventListener('message', (event) => {
       const msg = event.data;
       if (msg.type === 'bookmarkUpdated') {
@@ -550,6 +658,7 @@ export class ProblemWebviewPanel {
       } else if (msg.type === 'testingCompleted') {
         resultsBox.className = 'result-box visible';
         const results = msg.results || [];
+        lastResults = results;
         const allPassed = results.every(r => r.passed);
         resultsBox.classList.add(allPassed ? 'res-passed' : 'res-failed');
 
@@ -559,9 +668,16 @@ export class ProblemWebviewPanel {
 
         results.forEach((r, i) => {
           html += '<div style="margin-top:6px;padding:6px;background:rgba(255,255,255,0.04);border-radius:4px;">' +
-            '<strong>Case ' + (i + 1) + ': </strong>' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<div><strong>Case ' + (i + 1) + ': </strong>' +
             '<span style="color:' + (r.passed ? '#00b8a3' : '#ff375f') + ';font-weight:600;">' + (r.passed ? 'PASSED' : 'FAILED') + '</span>' +
-            (r.runtimeMs ? ' (' + r.runtimeMs + 'ms)' : '') +
+            (r.runtimeMs ? ' (' + r.runtimeMs + 'ms)' : '') + '</div>';
+
+          if (!r.passed) {
+            html += '<button class="btn btn-secondary" style="font-size:11px;padding:2px 8px;" onclick="diagnoseFailedCase(' + i + ')">🤖 Why Failed?</button>';
+          }
+
+          html += '</div>' +
             '<pre style="margin:4px 0 0 0;font-size:12px;">Input: ' + escapeHtml(r.input) + '\\n' +
             (r.actualOutput ? 'Output: ' + escapeHtml(r.actualOutput) + '\\n' : '') +
             (r.expectedOutput ? 'Expected: ' + escapeHtml(r.expectedOutput) + '\\n' : '') +
@@ -572,6 +688,15 @@ export class ProblemWebviewPanel {
       } else if (msg.type === 'testingError') {
         resultsBox.className = 'result-box visible res-failed';
         resultsBox.innerHTML = '<strong>Execution Error:</strong> <pre>' + escapeHtml(msg.error) + '</pre>';
+      } else if (msg.type === 'aiStarted') {
+        aiBox.className = 'ai-response-box visible';
+        aiBox.innerHTML = '<em>🤖 Thinking Socratic thoughts...</em>';
+      } else if (msg.type === 'aiCompleted') {
+        aiBox.className = 'ai-response-box visible';
+        aiBox.innerHTML = '<strong>🤖 Socratic Coach:</strong><div style="margin-top:6px;">' + escapeHtml(msg.text).replace(/\\n/g, '<br/>') + '</div>';
+      } else if (msg.type === 'aiError') {
+        aiBox.className = 'ai-response-box visible';
+        aiBox.innerHTML = '<strong>⚠️ AI Error:</strong> ' + escapeHtml(msg.error);
       } else if (msg.type === 'submissionStarted') {
         resultsBox.className = 'result-box visible';
         resultsBox.innerHTML = '<em>☁ Submitting solution to LeetCode...</em>';

@@ -8,6 +8,7 @@ import { LeetCodeTreeDataProvider } from './views/treeDataProvider';
 import { ProblemWebviewPanel } from './views/problemWebview';
 import { LocalTestRunner, parseExpectedOutputsFromContent } from './runner/localRunner';
 import { SessionManager } from './auth/sessionManager';
+import { SocraticCoach } from './ai/coach';
 
 export function activate(context: vscode.ExtensionContext) {
   const config = vscode.workspace.getConfiguration('leetcode');
@@ -19,6 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const sessionManager = new SessionManager(context.secrets, endpoint);
   const localRunner = new LocalTestRunner();
+  const coach = new SocraticCoach();
 
   // Tree View
   const treeDataProvider = new LeetCodeTreeDataProvider(client, planManager);
@@ -105,6 +107,23 @@ export function activate(context: vscode.ExtensionContext) {
                   langInfo.snippetSlug,
                   code
                 );
+              },
+              async (action, payload) => {
+                const userCode = doc.getText();
+                if (action === 'hint') {
+                  return coach.getHint(detail, userCode, payload?.level || 1);
+                } else if (action === 'complexity') {
+                  return coach.analyzeComplexity(detail, userCode);
+                } else if (action === 'failure') {
+                  return coach.explainFailure(
+                    detail,
+                    userCode,
+                    payload?.failingInput || '',
+                    payload?.actualOutput || '',
+                    payload?.expectedOutput
+                  );
+                }
+                return '';
               }
             );
           }

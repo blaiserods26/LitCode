@@ -1,23 +1,21 @@
-# 12 - AI Socratic Coach Integration
+# 12: AI Socratic Coach Integration
 
-Type: task
-Status: open
-Blocked by: 10
+**What to build:** An in-webview Socratic AI drawer powered by native `vscode.lm` (Copilot/editor AI) or user API keys (BYOK) that provides 3-tier progressive hints, algorithmic pattern nudges, and "Why did my test fail?" explanations—with an automated guardrail filter that prevents outputting executable solution code.
 
-## Question
+**Blocked by:** None
 
-How should the Socratic AI Coach be architected to leverage the user's active AI model (`vscode.lm` or BYOK) while strictly enforcing no-spoilers coaching?
+**Status:** resolved
 
-## Implementation Plan (On Hold Until Core Extension is Built)
+- [x] Support `vscode.lm` language model family query (`vscode.lm.selectChatModels`)
+- [x] Fallback configuration in settings for BYOK API key (Google Gemini, OpenAI, Claude, local Ollama)
+- [x] Strict Socratic Coach system prompt prohibiting direct code generation
+- [x] Post-generation filter stripping code blocks if model slips up
+- [x] Webview drawer with "Get Nudge (Level 1)", "Edge Case Warning (Level 2)", "Pseudocode Flow (Level 3)", and "Analyze Failed Test"
 
-1. Provider Layer:
-   - Primary: `vscode.lm.selectChatModels()` to hook directly into whichever AI model the user has active in VS Code.
-   - Secondary / Fallback: Configurable API Key in settings (Google Gemini, Anthropic Claude, OpenAI, Ollama).
-2. Socratic Prompt Protocol:
-   - System prompt instructs model to act as a seasoned algorithmic mentor.
-   - Explicit instructions never to provide complete code snippets or answers.
-   - Hint tiered strategy: (1) Conceptual question → (2) Invariant / algorithmic pattern clue → (3) Edge-case alert → (4) Pseudocode walkthrough.
-3. Post-Filter Guardrail:
-   - Regular expression / AST parser scans response for executable code blocks. If detected, intercepts and replaces with guiding questions.
-4. UI Drawer:
-   - Collapsible AI Coach panel integrated directly into the Problem Workspace Webview.
+## Answer
+
+1. Implemented Socratic prompt engine and code spoiler filter (`src/ai/guardrails.ts`) that strips code blocks and enforces conceptual nudges.
+2. Implemented `SocraticCoach` (`src/ai/coach.ts`) seamlessly querying native `vscode.lm` or configured BYOK endpoint with heuristic fallback.
+3. Integrated Socratic AI Coach drawer directly into the companion problem Webview (`src/views/problemWebview.ts`) with interactive buttons (Level 1 Nudge, Level 2 Alert, Level 3 Flow, Complexity Analysis, and per-test "Why Failed?" diagnosis).
+4. Unit tests in `src/ai/guardrails.test.ts`.
+

@@ -186,6 +186,21 @@
           "type": "boolean",
           "default": true,
           "description": "Automatically open the problem description and test runner webview beside the solution editor."
+        },
+        "leetcode.ai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Optional custom API Key for Socratic AI Coach (BYOK: OpenAI, Gemini, Claude, or local Ollama). Leave empty to use VS Code Language Model API (Copilot)."
+        },
+        "leetcode.ai.endpoint": {
+          "type": "string",
+          "default": "https://api.openai.com/v1/chat/completions",
+          "description": "API Endpoint URL for custom AI provider (OpenAI compatible, Ollama, etc.)."
+        },
+        "leetcode.ai.model": {
+          "type": "string",
+          "default": "gpt-4o-mini",
+          "description": "Model identifier for custom AI provider."
         }
       }
     }
@@ -194,12 +209,14 @@
     "compile": "node esbuild.config.js",
     "watch": "node esbuild.config.js --watch",
     "package": "node esbuild.config.js --production",
+    "package:vsix": "npm run package && vsce package --no-dependencies",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
     "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^2.30.0",
     "esbuild": "^0.23.0",
     "typescript": "^5.5.0",
     "vitest": "^1.6.0"
