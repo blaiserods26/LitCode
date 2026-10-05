@@ -1,0 +1,207 @@
+{
+  "name": "leetcode-practice-companion",
+  "displayName": "LeetCode Practice Companion",
+  "description": "Practice LeetCode offline and online: Daily challenges, Striver & NeetCode study plans, local test runner, and Socratic hints.",
+  "version": "0.1.0",
+  "publisher": "leetcode-companion",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Education",
+    "Programming Languages",
+    "Testing"
+  ],
+  "keywords": [
+    "leetcode",
+    "algorithms",
+    "striver",
+    "neetcode",
+    "data-structures",
+    "coding-interview"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "leetcode-companion-container",
+          "title": "LeetCode Companion",
+          "icon": "resources/icons/leetcode.svg"
+        }
+      ]
+    },
+    "views": {
+      "leetcode-companion-container": [
+        {
+          "id": "leetcode-companion.explorer",
+          "name": "LeetCode Explorer"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "leetcode.refreshExplorer",
+        "title": "Refresh Explorer",
+        "category": "LeetCode",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "leetcode.openDailyChallenge",
+        "title": "Open Daily Challenge",
+        "category": "LeetCode",
+        "icon": "$(flame)"
+      },
+      {
+        "command": "leetcode.openProblem",
+        "title": "Open Problem",
+        "category": "LeetCode"
+      },
+      {
+        "command": "leetcode.searchProblem",
+        "title": "Search Problem by Slug or Title",
+        "category": "LeetCode",
+        "icon": "$(search)"
+      },
+      {
+        "command": "leetcode.runLocalTests",
+        "title": "Run Local Tests",
+        "category": "LeetCode",
+        "icon": "$(play)"
+      },
+      {
+        "command": "leetcode.submitSolution",
+        "title": "Submit Solution to LeetCode",
+        "category": "LeetCode",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "leetcode.toggleBookmark",
+        "title": "Toggle Bookmark",
+        "category": "LeetCode",
+        "icon": "$(star)"
+      },
+      {
+        "command": "leetcode.signIn",
+        "title": "Sign In with LeetCode Cookies",
+        "category": "LeetCode",
+        "icon": "$(account)"
+      },
+      {
+        "command": "leetcode.signOut",
+        "title": "Sign Out",
+        "category": "LeetCode"
+      },
+      {
+        "command": "leetcode.toggleSolved",
+        "title": "Toggle Solved Status",
+        "category": "LeetCode",
+        "icon": "$(check)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "leetcode.openDailyChallenge",
+          "when": "view == leetcode-companion.explorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "leetcode.searchProblem",
+          "when": "view == leetcode-companion.explorer",
+          "group": "navigation@2"
+        },
+        {
+          "command": "leetcode.refreshExplorer",
+          "when": "view == leetcode-companion.explorer",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "leetcode.openProblem",
+          "when": "viewItem == problemItem",
+          "group": "inline@1"
+        },
+        {
+          "command": "leetcode.toggleBookmark",
+          "when": "viewItem == problemItem",
+          "group": "inline@2"
+        },
+        {
+          "command": "leetcode.toggleSolved",
+          "when": "viewItem == problemItem",
+          "group": "inline@3"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "leetcode.runLocalTests",
+          "when": "editorTextFocus && resourceFilename =~ /.*\\.(py|js|ts|cpp|java)/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "leetcode.submitSolution",
+          "when": "editorTextFocus && resourceFilename =~ /.*\\.(py|js|ts|cpp|java)/",
+          "group": "navigation@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "LeetCode Practice Companion",
+      "properties": {
+        "leetcode.defaultLanguage": {
+          "type": "string",
+          "default": "python3",
+          "enum": [
+            "python3",
+            "javascript",
+            "typescript",
+            "cpp",
+            "java"
+          ],
+          "enumDescriptions": [
+            "Python 3",
+            "JavaScript (Node.js)",
+            "TypeScript",
+            "C++ (g++)",
+            "Java"
+          ],
+          "description": "Default programming language for LeetCode solution templates."
+        },
+        "leetcode.workspaceDirectory": {
+          "type": "string",
+          "default": "leetcode-solutions",
+          "description": "Directory relative to workspace root where problem solution files are saved."
+        },
+        "leetcode.endpoint": {
+          "type": "string",
+          "default": "https://leetcode.com",
+          "description": "LeetCode base endpoint (leetcode.com or leetcode.cn)."
+        },
+        "leetcode.autoOpenCompanionWebview": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open the problem description and test runner webview beside the solution editor."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node esbuild.config.js",
+    "watch": "node esbuild.config.js --watch",
+    "package": "node esbuild.config.js --production",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "neetcode-150",
+  "title": "NeetCode 150",
+  "description": "Comprehensive interview preparation practice sheet by NeetCode grouped by pattern.",
+  "categories": [
+    {
+      "name": "Arrays & Hashing",
+      "problems": [
+        { "title": "Contains Duplicate", "slug": "contains-duplicate", "difficulty": "Easy", "frontendId": "217" },
+        { "title": "Valid Anagram", "slug": "valid-anagram", "difficulty": "Easy", "frontendId": "242" },
+        { "title": "Two Sum", "slug": "two-sum", "difficulty": "Easy", "frontendId": "1" },
+        { "title": "Group Anagrams", "slug": "group-anagrams", "difficulty": "Medium", "frontendId": "49" },
+        { "title": "Top K Frequent Elements", "slug": "top-k-frequent-elements", "difficulty": "Medium", "frontendId": "347" },
+        { "title": "Product of Array Except Self", "slug": "product-of-array-except-self", "difficulty": "Medium", "frontendId": "238" },
+        { "title": "Longest Consecutive Sequence", "slug": "longest-consecutive-sequence", "difficulty": "Medium", "frontendId": "128" }
+      ]
+    },
+    {
+      "name": "Two Pointers",
+      "problems": [
+        { "title": "Valid Palindrome", "slug": "valid-palindrome", "difficulty": "Easy", "frontendId": "125" },
+        { "title": "Two Sum II - Input Array Is Sorted", "slug": "two-sum-ii-input-array-is-sorted", "difficulty": "Medium", "frontendId": "167" },
+        { "title": "3Sum", "slug": "3sum", "difficulty": "Medium", "frontendId": "15" },
+        { "title": "Container With Most Water", "slug": "container-with-most-water", "difficulty": "Medium", "frontendId": "11" },
+        { "title": "Trapping Rain Water", "slug": "trapping-rain-water", "difficulty": "Hard", "frontendId": "42" }
+      ]
+    },
+    {
+      "name": "Sliding Window",
+      "problems": [
+        { "title": "Best Time to Buy and Sell Stock", "slug": "best-time-to-buy-and-sell-stock", "difficulty": "Easy", "frontendId": "121" },
+        { "title": "Longest Substring Without Repeating Characters", "slug": "longest-substring-without-repeating-characters", "difficulty": "Medium", "frontendId": "3" },
+        { "title": "Longest Repeating Character Replacement", "slug": "longest-repeating-character-replacement", "difficulty": "Medium", "frontendId": "424" },
+        { "title": "Permutation in String", "slug": "permutation-in-string", "difficulty": "Medium", "frontendId": "567" },
+        { "title": "Minimum Window Substring", "slug": "minimum-window-substring", "difficulty": "Hard", "frontendId": "76" }
+      ]
+    },
+    {
+      "name": "Stack",
+      "problems": [
+        { "title": "Valid Parentheses", "slug": "valid-parentheses", "difficulty": "Easy", "frontendId": "20" },
+        { "title": "Min Stack", "slug": "min-stack", "difficulty": "Medium", "frontendId": "155" },
+        { "title": "Evaluate Reverse Polish Notation", "slug": "evaluate-reverse-polish-notation", "difficulty": "Medium", "frontendId": "150" },
+        { "title": "Daily Temperatures", "slug": "daily-temperatures", "difficulty": "Medium", "frontendId": "739" },
+        { "title": "Largest Rectangle in Histogram", "slug": "largest-rectangle-in-histogram", "difficulty": "Hard", "frontendId": "84" }
+      ]
+    }
+  ]
+}

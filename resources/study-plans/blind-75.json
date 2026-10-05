@@ -1,0 +1,38 @@
+{
+  "id": "blind-75",
+  "title": "Blind 75",
+  "description": "The quintessential 75 questions to master interview coding patterns.",
+  "categories": [
+    {
+      "name": "Array",
+      "problems": [
+        { "title": "Two Sum", "slug": "two-sum", "difficulty": "Easy", "frontendId": "1" },
+        { "title": "Best Time to Buy and Sell Stock", "slug": "best-time-to-buy-and-sell-stock", "difficulty": "Easy", "frontendId": "121" },
+        { "title": "Contains Duplicate", "slug": "contains-duplicate", "difficulty": "Easy", "frontendId": "217" },
+        { "title": "Product of Array Except Self", "slug": "product-of-array-except-self", "difficulty": "Medium", "frontendId": "238" },
+        { "title": "Maximum Subarray", "slug": "maximum-subarray", "difficulty": "Medium", "frontendId": "53" },
+        { "title": "Maximum Product Subarray", "slug": "maximum-product-subarray", "difficulty": "Medium", "frontendId": "152" },
+        { "title": "Find Minimum in Rotated Sorted Array", "slug": "find-minimum-in-rotated-sorted-array", "difficulty": "Medium", "frontendId": "153" },
+        { "title": "Search in Rotated Sorted Array", "slug": "search-in-rotated-sorted-array", "difficulty": "Medium", "frontendId": "33" },
+        { "title": "3Sum", "slug": "3sum", "difficulty": "Medium", "frontendId": "15" },
+        { "title": "Container With Most Water", "slug": "container-with-most-water", "difficulty": "Medium", "frontendId": "11" }
+      ]
+    },
+    {
+      "name": "Dynamic Programming",
+      "problems": [
+        { "title": "Climbing Stairs", "slug": "climbing-stairs", "difficulty": "Easy", "frontendId": "70" },
+        { "title": "Coin Change", "slug": "coin-change", "difficulty": "Medium", "frontendId": "322" },
+        { "title": "Longest Increasing Subsequence", "slug": "longest-increasing-subsequence", "difficulty": "Medium", "frontendId": "300" },
+        { "title": "Longest Common Subsequence", "slug": "longest-common-subsequence", "difficulty": "Medium", "frontendId": "1143" },
+        { "title": "Word Break", "slug": "word-break", "difficulty": "Medium", "frontendId": "139" },
+        { "title": "Combination Sum", "slug": "combination-sum", "difficulty": "Medium", "frontendId": "39" },
+        { "title": "House Robber", "slug": "house-robber", "difficulty": "Medium", "frontendId": "198" },
+        { "title": "House Robber II", "slug": "house-robber-ii", "difficulty": "Medium", "frontendId": "213" },
+        { "title": "Decode Ways", "slug": "decode-ways", "difficulty": "Medium", "frontendId": "91" },
+        { "title": "Unique Paths", "slug": "unique-paths", "difficulty": "Medium", "frontendId": "62" },
+        { "title": "Jump Game", "slug": "jump-game", "difficulty": "Medium", "frontendId": "55" }
+      ]
+    }
+  ]
+}

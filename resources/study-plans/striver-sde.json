@@ -1,0 +1,81 @@
+{
+  "id": "striver-sde",
+  "title": "Striver's SDE Sheet",
+  "description": "Top coding interview problems curated by Striver (Take U Forward) for product companies.",
+  "categories": [
+    {
+      "name": "Arrays",
+      "problems": [
+        { "title": "Set Matrix Zeroes", "slug": "set-matrix-zeroes", "difficulty": "Medium", "frontendId": "73" },
+        { "title": "Pascal's Triangle", "slug": "pascals-triangle", "difficulty": "Easy", "frontendId": "118" },
+        { "title": "Next Permutation", "slug": "next-permutation", "difficulty": "Medium", "frontendId": "31" },
+        { "title": "Maximum Subarray (Kadane's)", "slug": "maximum-subarray", "difficulty": "Medium", "frontendId": "53" },
+        { "title": "Sort Colors (0s, 1s, 2s)", "slug": "sort-colors", "difficulty": "Medium", "frontendId": "75" },
+        { "title": "Best Time to Buy and Sell Stock", "slug": "best-time-to-buy-and-sell-stock", "difficulty": "Easy", "frontendId": "121" },
+        { "title": "Rotate Image", "slug": "rotate-image", "difficulty": "Medium", "frontendId": "48" },
+        { "title": "Merge Overlapping Subintervals", "slug": "merge-intervals", "difficulty": "Medium", "frontendId": "56" },
+        { "title": "Merge Two Sorted Arrays", "slug": "merge-sorted-array", "difficulty": "Easy", "frontendId": "88" },
+        { "title": "Find the Duplicate Number", "slug": "find-the-duplicate-number", "difficulty": "Medium", "frontendId": "287" }
+      ]
+    },
+    {
+      "name": "Two Pointers & Linked List",
+      "problems": [
+        { "title": "Reverse Linked List", "slug": "reverse-linked-list", "difficulty": "Easy", "frontendId": "206" },
+        { "title": "Middle of the Linked List", "slug": "middle-of-the-linked-list", "difficulty": "Easy", "frontendId": "876" },
+        { "title": "Merge Two Sorted Lists", "slug": "merge-two-sorted-lists", "difficulty": "Easy", "frontendId": "21" },
+        { "title": "Remove Nth Node From End of List", "slug": "remove-nth-node-from-end-of-list", "difficulty": "Medium", "frontendId": "19" },
+        { "title": "Add Two Numbers", "slug": "add-two-numbers", "difficulty": "Medium", "frontendId": "2" },
+        { "title": "Delete Node in a Linked List", "slug": "delete-node-in-a-linked-list", "difficulty": "Medium", "frontendId": "237" },
+        { "title": "Intersection of Two Linked Lists", "slug": "intersection-of-two-linked-lists", "difficulty": "Easy", "frontendId": "160" },
+        { "title": "Linked List Cycle", "slug": "linked-list-cycle", "difficulty": "Easy", "frontendId": "141" },
+        { "title": "Palindrome Linked List", "slug": "palindrome-linked-list", "difficulty": "Easy", "frontendId": "234" },
+        { "title": "Flatten a Multilevel Doubly Linked List", "slug": "flatten-a-multilevel-doubly-linked-list", "difficulty": "Medium", "frontendId": "430" }
+      ]
+    },
+    {
+      "name": "Greedy Algorithm",
+      "problems": [
+        { "title": "N meetings in one room", "slug": "meeting-rooms", "difficulty": "Easy", "frontendId": "252" },
+        { "title": "Minimum Platforms / Meeting Rooms II", "slug": "meeting-rooms-ii", "difficulty": "Medium", "frontendId": "253" },
+        { "title": "Job Sequencing Problem", "slug": "maximum-profit-in-job-scheduling", "difficulty": "Hard", "frontendId": "1235" },
+        { "title": "Fractional Knapsack / Assign Cookies", "slug": "assign-cookies", "difficulty": "Easy", "frontendId": "455" },
+        { "title": "Minimum Coins (Coin Change)", "slug": "coin-change", "difficulty": "Medium", "frontendId": "322" }
+      ]
+    },
+    {
+      "name": "Binary Search",
+      "problems": [
+        { "title": "Binary Search", "slug": "binary-search", "difficulty": "Easy", "frontendId": "704" },
+        { "title": "Search in Rotated Sorted Array", "slug": "search-in-rotated-sorted-array", "difficulty": "Medium", "frontendId": "33" },
+        { "title": "Single Element in a Sorted Array", "slug": "single-element-in-a-sorted-array", "difficulty": "Medium", "frontendId": "540" },
+        { "title": "Find Minimum in Rotated Sorted Array", "slug": "find-minimum-in-rotated-sorted-array", "difficulty": "Medium", "frontendId": "153" },
+        { "title": "Search a 2D Matrix", "slug": "search-a-2d-matrix", "difficulty": "Medium", "frontendId": "74" },
+        { "title": "Median of Two Sorted Arrays", "slug": "median-of-two-sorted-arrays", "difficulty": "Hard", "frontendId": "4" }
+      ]
+    },
+    {
+      "name": "Trees & Binary Search Trees",
+      "problems": [
+        { "title": "Maximum Depth of Binary Tree", "slug": "maximum-depth-of-binary-tree", "difficulty": "Easy", "frontendId": "104" },
+        { "title": "Diameter of Binary Tree", "slug": "diameter-of-binary-tree", "difficulty": "Easy", "frontendId": "543" },
+        { "title": "Balanced Binary Tree", "slug": "balanced-binary-tree", "difficulty": "Easy", "frontendId": "110" },
+        { "title": "Lowest Common Ancestor of a Binary Tree", "slug": "lowest-common-ancestor-of-a-binary-tree", "difficulty": "Medium", "frontendId": "236" },
+        { "title": "Binary Tree Level Order Traversal", "slug": "binary-tree-level-order-traversal", "difficulty": "Medium", "frontendId": "102" },
+        { "title": "Validate Binary Search Tree", "slug": "validate-binary-search-tree", "difficulty": "Medium", "frontendId": "98" },
+        { "title": "Kth Smallest Element in a BST", "slug": "kth-smallest-element-in-a-bst", "difficulty": "Medium", "frontendId": "230" }
+      ]
+    },
+    {
+      "name": "Dynamic Programming",
+      "problems": [
+        { "title": "Climbing Stairs", "slug": "climbing-stairs", "difficulty": "Easy", "frontendId": "70" },
+        { "title": "Longest Increasing Subsequence", "slug": "longest-increasing-subsequence", "difficulty": "Medium", "frontendId": "300" },
+        { "title": "Longest Common Subsequence", "slug": "longest-common-subsequence", "difficulty": "Medium", "frontendId": "1143" },
+        { "title": "0/1 Knapsack / Partition Equal Subset Sum", "slug": "partition-equal-subset-sum", "difficulty": "Medium", "frontendId": "416" },
+        { "title": "Edit Distance", "slug": "edit-distance", "difficulty": "Medium", "frontendId": "72" },
+        { "title": "Maximum Product Subarray", "slug": "maximum-product-subarray", "difficulty": "Medium", "frontendId": "152" }
+      ]
+    }
+  ]
+}
