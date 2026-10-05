@@ -545,9 +545,11 @@ export class ProblemWebviewPanel {
     <div class="case-tabs" id="caseTabs"></div>
     <textarea id="currentCaseInput" class="test-input" spellcheck="false"></textarea>
     <div class="runner-actions">
+      <button id="vizBtn" class="btn btn-secondary" title="Render Binary Tree or Linked List">🌲 Visualize Structure</button>
       <button id="runTestsBtn" class="btn">▶ Run Local Tests</button>
       <button id="submitBtn" class="btn" style="background:#2e7d32;">☁ Submit Solution</button>
     </div>
+    <div id="vizBox" class="result-box" style="overflow-x:auto;text-align:center;"></div>
     <div id="resultsBox" class="result-box"></div>
   </div>
 
@@ -625,6 +627,85 @@ export class ProblemWebviewPanel {
     submitBtn.addEventListener('click', () => {
       vscode.postMessage({ command: 'submitSolution' });
     });
+
+    const vizBtn = document.getElementById('vizBtn');
+    const vizBox = document.getElementById('vizBox');
+
+    vizBtn.addEventListener('click', () => {
+      if (vizBox.className.includes('visible')) {
+        vizBox.className = 'result-box';
+        return;
+      }
+
+      const raw = inputArea.value.trim();
+      const match = /\[(.*?)\]/.exec(raw);
+      if (!match) {
+        vizBox.className = 'result-box visible';
+        vizBox.innerHTML = '<span class="subtext">No array pattern found in input to visualize. Expected format: [1,2,3] or [3,9,20,null,null,15,7]</span>';
+        return;
+      }
+
+      const tokens = match[1].split(',').map(s => s.trim()).filter(Boolean);
+      const isTree = raw.toLowerCase().includes('null') || tokens.length > 5;
+
+      if (isTree) {
+        vizBox.innerHTML = '<div style="font-weight:600;font-size:12px;color:#4ec9b0;margin-bottom:6px;">Binary Tree Visualization</div>' +
+          renderTreeClientSvg(tokens);
+      } else {
+        vizBox.innerHTML = '<div style="font-weight:600;font-size:12px;color:#4fc1ff;margin-bottom:6px;">Linked List Visualization</div>' +
+          renderListClientSvg(tokens);
+      }
+      vizBox.className = 'result-box visible';
+    });
+
+    function renderTreeClientSvg(tokens) {
+      if (!tokens.length) return 'Empty';
+      const depth = Math.floor(Math.log2(tokens.length)) + 1;
+      const width = Math.max(340, Math.pow(2, depth) * 45);
+      const height = depth * 65 + 35;
+      let svg = '<svg width="' + width + '" height="' + height + '" viewBox="0 0 ' + width + ' ' + height + '" xmlns="http://www.w3.org/2000/svg">';
+      const positions = [];
+
+      for (let i = 0; i < tokens.length; i++) {
+        const val = tokens[i];
+        if (val.toLowerCase() === 'null') continue;
+        const level = Math.floor(Math.log2(i + 1));
+        const idxInLevel = i - (Math.pow(2, level) - 1);
+        const seg = width / Math.pow(2, level);
+        const x = seg * idxInLevel + seg / 2;
+        const y = 30 + level * 60;
+        positions[i] = { x, y, val };
+
+        const parentIdx = Math.floor((i - 1) / 2);
+        if (i > 0 && positions[parentIdx]) {
+          svg += '<line x1="' + positions[parentIdx].x + '" y1="' + positions[parentIdx].y + '" x2="' + x + '" y2="' + y + '" stroke="#4ec9b0" stroke-width="2"/>';
+        }
+      }
+
+      for (let i = 0; i < positions.length; i++) {
+        if (!positions[i]) continue;
+        const p = positions[i];
+        svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="15" fill="#1e1e1e" stroke="#00b8a3" stroke-width="2"/>' +
+          '<text x="' + p.x + '" y="' + (p.y + 4) + '" fill="#ffffff" font-size="11" font-weight="600" text-anchor="middle" font-family="monospace">' + escapeHtml(p.val) + '</text>';
+      }
+      svg += '</svg>';
+      return svg;
+    }
+
+    function renderListClientSvg(tokens) {
+      let svg = '<svg height="55" xmlns="http://www.w3.org/2000/svg"><g style="display:flex;">';
+      let x = 10;
+      tokens.forEach((t, i) => {
+        svg += '<rect x="' + x + '" y="10" width="40" height="30" rx="4" fill="#252526" stroke="#4fc1ff" stroke-width="2"/>' +
+          '<text x="' + (x + 20) + '" y="29" fill="#fff" font-size="11" font-weight="600" text-anchor="middle" font-family="monospace">' + escapeHtml(t) + '</text>';
+        x += 40;
+        svg += '<line x1="' + x + '" y1="25" x2="' + (x + 25) + '" y2="25" stroke="#4fc1ff" stroke-width="2"/>' +
+          '<polygon points="' + (x + 25) + ',25 ' + (x + 20) + ',22 ' + (x + 20) + ',28" fill="#4fc1ff"/>';
+        x += 25;
+      });
+      svg += '<text x="' + (x + 5) + '" y="29" fill="#888" font-size="11" font-weight="700" font-family="monospace">NULL</text></svg>';
+      return svg;
+    }
 
     function requestAiHint(level) {
       vscode.postMessage({ command: 'requestAiHint', payload: { level } });
