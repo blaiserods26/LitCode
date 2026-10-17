@@ -5,6 +5,25 @@ export const window = {
   showWarningMessage: async () => undefined,
   createWebviewPanel: () => ({}),
   withProgress: async (_opts: any, task: any) => task({ report: () => {} }),
+  createStatusBarItem: () => ({
+    text: '',
+    tooltip: '',
+    command: '',
+    color: undefined,
+    backgroundColor: undefined,
+    show: () => {},
+    hide: () => {},
+    dispose: () => {},
+  }),
+};
+
+export const StatusBarAlignment = {
+  Left: 1,
+  Right: 2,
+};
+
+export const ThemeColor = class {
+  constructor(public id: string) {}
 };
 
 export const ProgressLocation = {

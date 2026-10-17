@@ -62,7 +62,7 @@
       },
       {
         "command": "leetcode.searchProblem",
-        "title": "Search Problem by Slug or Title",
+        "title": "Search Problems",
         "category": "LeetCode",
         "icon": "$(search)"
       },
@@ -100,6 +100,46 @@
         "title": "Toggle Solved Status",
         "category": "LeetCode",
         "icon": "$(check)"
+      },
+      {
+        "command": "leetcode.changeLanguage",
+        "title": "Change Preferred Language",
+        "category": "LeetCode",
+        "icon": "$(symbol-keyword)"
+      },
+      {
+        "command": "leetcode.addStudyPlan",
+        "title": "Add Study Plan",
+        "category": "LeetCode",
+        "icon": "$(plus)"
+      },
+      {
+        "command": "leetcode.deleteStudyPlan",
+        "title": "Delete Custom Study Plan",
+        "category": "LeetCode",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "leetcode.startInterviewTimer",
+        "title": "Start Mock Interview Timer",
+        "category": "LeetCode",
+        "icon": "$(watch)"
+      },
+      {
+        "command": "leetcode.toggleInterviewTimer",
+        "title": "Toggle Mock Interview Timer (Pause/Resume)",
+        "category": "LeetCode"
+      },
+      {
+        "command": "leetcode.resetInterviewTimer",
+        "title": "Reset Mock Interview Timer",
+        "category": "LeetCode"
+      },
+      {
+        "command": "leetcode.toggleStrictMode",
+        "title": "Toggle Strict Mock Interview Mode",
+        "category": "LeetCode",
+        "icon": "$(lock)"
       }
     ],
     "menus": {
@@ -118,9 +158,29 @@
           "command": "leetcode.refreshExplorer",
           "when": "view == leetcode-companion.explorer",
           "group": "navigation@3"
+        },
+        {
+          "command": "leetcode.addStudyPlan",
+          "when": "view == leetcode-companion.explorer",
+          "group": "navigation@4"
+        },
+        {
+          "command": "leetcode.changeLanguage",
+          "when": "view == leetcode-companion.explorer",
+          "group": "navigation@5"
         }
       ],
       "view/item/context": [
+        {
+          "command": "leetcode.addStudyPlan",
+          "when": "viewItem == plansRoot",
+          "group": "inline@1"
+        },
+        {
+          "command": "leetcode.deleteStudyPlan",
+          "when": "viewItem == customPlanItem",
+          "group": "inline@1"
+        },
         {
           "command": "leetcode.openProblem",
           "when": "viewItem == problemItem",
@@ -172,10 +232,15 @@
           ],
           "description": "Default programming language for LeetCode solution templates."
         },
+        "leetcode.solutionsDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "Global system directory path where problem solutions are saved. Defaults to '~/.leetcode/solutions' if empty."
+        },
         "leetcode.workspaceDirectory": {
           "type": "string",
           "default": "leetcode-solutions",
-          "description": "Directory relative to workspace root where problem solution files are saved."
+          "description": "Deprecated: Use leetcode.solutionsDirectory instead."
         },
         "leetcode.endpoint": {
           "type": "string",

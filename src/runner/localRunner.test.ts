@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseExpectedOutputsFromContent, compareOutputs } from './localRunner';
+import { parseExpectedOutputsFromContent, compareOutputs, LocalTestRunner } from './localRunner';
 
 describe('LocalTestRunner Helpers', () => {
   it('parses expected outputs from standard LeetCode HTML content', () => {
@@ -23,6 +23,19 @@ describe('LocalTestRunner Helpers', () => {
     expect(compareOutputs('[0, 1]', '[0,1]')).toBe(true);
     expect(compareOutputs('true', 'true')).toBe(true);
     expect(compareOutputs('"abc"', '"abc"')).toBe(true);
+    expect(compareOutputs('42', '42')).toBe(true);
     expect(compareOutputs('[1, 2, 3]', '[1, 2, 4]')).toBe(false);
+    expect(compareOutputs('not-json-1', 'not-json-1')).toBe(true);
+    expect(compareOutputs('not-json-1', 'not-json-2')).toBe(false);
+  });
+
+  it('rejects unsupported solution file extensions', async () => {
+    const runner = new LocalTestRunner();
+    await expect(runner.run('solution.rb', ['[1,2]'], ['[2,1]'])).rejects.toThrow(
+      /Unsupported solution format: \.rb/
+    );
+    await expect(runner.run('solution.txt', ['[1,2]'], ['[2,1]'])).rejects.toThrow(
+      /Unsupported solution format: \.txt/
+    );
   });
 });

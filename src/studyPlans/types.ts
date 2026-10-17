@@ -17,6 +17,7 @@ export interface StudyPlan {
   title: string;
   description: string;
   categories: StudyPlanCategory[];
+  isCustom?: boolean;
 }
 
 export interface StudyPlanProgress {

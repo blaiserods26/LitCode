@@ -10,3 +10,4 @@ esbuild.config.js
 .gitignore
 .git/**
 node_modules/**
+leetcode-solutions/**

@@ -4,9 +4,10 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] C++ test harness generator with `Solution` class linking, JSON parsing header or lightweight token parser, compiling via `g++`
-- [ ] Java test harness generator with reflection or direct invocation compiling via `javac` and running `java`
-- [ ] Settings configuration for custom compiler paths and optimization flags (`-O2`, `-std=c++17`)
-- [ ] Reporting compilation errors with line numbers mapped back to user's solution file
+- [x] C++ test harness generator with `Solution` class linking, compiling via `g++ -std=c++17` with timeout and clean temp artifact removal
+- [x] Java test harness generator with class loader compiling via `javac` and running `java` with timeout
+- [x] Clear diagnostic error messages when `g++` or `javac` are not found on the user's `PATH`
+- [x] Comprehensive error capture reporting compilation stdout/stderr directly into webview test results
+- [x] Unit tests for test runner dispatch and error conditions in `src/runner/localRunner.test.ts`

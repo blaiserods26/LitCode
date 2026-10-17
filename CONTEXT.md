@@ -13,8 +13,12 @@ The official LeetCode problem of the day scheduled for the current UTC date.
 _Avoid_: Daily problem, problem of the day, daily task
 
 **Study Plan**:
-A curated sequence of problems grouped by category or difficulty (e.g., Striver's SDE Sheet, NeetCode 150, Blind 75).
+A curated sequence of problems grouped by category or difficulty (e.g., Striver's SDE Sheet, NeetCode 150, Blind 75, or custom imported plans).
 _Avoid_: Sheet, roadmap, playlist
+
+**Solution Storage**:
+The dedicated global system-local filesystem directory where the user's attempted problem solution files are persisted outside of the active editor workspace.
+_Avoid_: Project cache, temp folder, workspace files
 
 **Bookmark**:
 A user-flagged problem saved locally in VS Code storage for fast review and revisit.

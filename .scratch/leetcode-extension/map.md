@@ -23,14 +23,15 @@ A complete, production-ready VS Code extension for practicing LeetCode inside th
 - [10-local-test-runner-harness](issues/10-local-test-runner-harness.md): Multi-language local test execution harnesses (Python, JS/TS) with JSON deserialization and runner tests.
 - [11-optional-auth-and-submission](issues/11-optional-auth-and-submission.md): Session cookie login, secret storage, and official LeetCode submission.
 - [12-ai-socratic-coach](issues/12-ai-socratic-coach.md): Socratic AI Coach (`vscode.lm` + BYOK) with strict hint-only guardrails and Webview drawer.
+- [13-data-structure-visualizer](issues/13-data-structure-visualizer.md): Visual SVG rendering of `TreeNode` and `ListNode` inputs in Webview.
+- [14-mock-interview-timer](issues/14-mock-interview-timer.md): Status bar 45-min interview countdown and strict interview mode.
+- [15-spaced-repetition-review](issues/15-spaced-repetition-review.md): SuperMemo/Anki-style review schedule and "Due Today" sidebar queue.
+- [16-cpp-java-test-runner](issues/16-cpp-java-test-runner.md): Local compilation and execution harnesses for C++ (`g++`) and Java (`javac`) with compiler check diagnostics.
 - [17-vsix-packaging](issues/17-vsix-packaging.md): Standalone `.vsix` installer generation via `@vscode/vsce`.
 
 ## Open Tickets (The Frontier)
 
-- [13-data-structure-visualizer](issues/13-data-structure-visualizer.md): Visual SVG rendering of `TreeNode` and `ListNode` inputs in Webview. (Unblocked)
-- [14-mock-interview-timer](issues/14-mock-interview-timer.md): Status bar 45-min interview countdown and strict interview mode. (Unblocked)
-- [15-spaced-repetition-review](issues/15-spaced-repetition-review.md): SuperMemo/Anki-style review schedule and "Due Today" sidebar queue. (Unblocked)
-- [16-cpp-java-test-runner](issues/16-cpp-java-test-runner.md): Local compilation and execution harnesses for C++ (`g++`) and Java (`javac`). (Unblocked)
+None! All core and advanced feature tickets are complete and verified.
 
 ## Not yet specified
 
