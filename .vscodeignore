@@ -2,6 +2,7 @@
 .vscode-test/**
 src/**
 .scratch/**
+CONTEXT.md
 vitest.config.ts
 tsconfig.json
 esbuild.config.js
@@ -11,3 +12,9 @@ esbuild.config.js
 .git/**
 node_modules/**
 leetcode-solutions/**
+*.vsix
+.gemini/**
+.agents/**
+**/*.log
+coverage/**
+Gemini_Generated_Image*.png

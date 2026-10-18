@@ -1,9 +1,19 @@
 {
-  "name": "leetcode-practice-companion",
-  "displayName": "LeetCode Practice Companion",
+  "name": "litcode",
+  "displayName": "LitCode",
   "description": "Practice LeetCode offline and online: Daily challenges, Striver & NeetCode study plans, local test runner, and Socratic hints.",
-  "version": "0.1.0",
-  "publisher": "leetcode-companion",
+  "version": "1.0.0",
+  "publisher": "BlaiseRodrigues",
+  "license": "MIT",
+  "icon": "resources/icons/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blaiserods26/LitCode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/blaiserods26/LitCode/issues"
+  },
+  "homepage": "https://github.com/blaiserods26/LitCode#readme",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -29,8 +39,8 @@
       "activitybar": [
         {
           "id": "leetcode-companion-container",
-          "title": "LeetCode Companion",
-          "icon": "resources/icons/leetcode.svg"
+          "title": "LitCode",
+          "icon": "resources/icons/fire.svg"
         }
       ]
     },
@@ -38,7 +48,7 @@
       "leetcode-companion-container": [
         {
           "id": "leetcode-companion.explorer",
-          "name": "LeetCode Explorer"
+          "name": "LitCode Explorer"
         }
       ]
     },
@@ -211,7 +221,7 @@
       ]
     },
     "configuration": {
-      "title": "LeetCode Practice Companion",
+      "title": "LitCode",
       "properties": {
         "leetcode.defaultLanguage": {
           "type": "string",
@@ -275,6 +285,8 @@
     "watch": "node esbuild.config.js --watch",
     "package": "node esbuild.config.js --production",
     "package:vsix": "npm run package && vsce package --no-dependencies",
+    "publish:vscode": "npm run package && vsce publish --no-dependencies",
+    "publish:ovsx": "npm run package && ovsx publish --no-dependencies",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -283,6 +295,7 @@
     "@types/vscode": "^1.90.0",
     "@vscode/vsce": "^2.30.0",
     "esbuild": "^0.23.0",
+    "ovsx": "^0.9.3",
     "typescript": "^5.5.0",
     "vitest": "^1.6.0"
   }
